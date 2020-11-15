@@ -1,0 +1,1 @@
+python run_crosscheck.py --video_path=/Sports1M/Videos --ann_file=all_vid.txt --num_workers=20 --outfile_prefix=(date +%d.%H%M%S)

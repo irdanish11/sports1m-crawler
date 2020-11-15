@@ -3,6 +3,7 @@ import glob
 import os
 import numpy as np
 import sys
+from tqdm import tqdm
 
 def crosscheck_videos(video_path, video_chunk):
     # Get existing videos
@@ -39,10 +40,10 @@ def parse_args():
 def main():
     
     args = parse_args()
-    video_path = args.video_path
-    ann_file = args.ann_file
-    outfile_prefix = args.outfile_prefix
-    num_workers = args.num_workers
+    video_path = args.video_path#'./Sports1M/Videos'#
+    ann_file = args.ann_file#'./all_vid.txt'#
+    outfile_prefix = args.outfile_prefix#'cmd_lst'#
+    num_workers = args.num_workers#20#
     
     if num_workers < 1:
         print('Number of workers must be at least 1')
@@ -54,14 +55,14 @@ def main():
     num_videos = len(non_existing_videos)
     process_step = num_videos/num_workers
     
-    for worker in xrange(num_workers):
+    for worker in tqdm(range(num_workers)):
         output_filename = '%s_worker%d.txt' % (outfile_prefix, worker)
         start_ind = worker * process_step
         if worker == num_workers - 1:
             end_ind = num_videos
         else:
             end_ind = (worker + 1) * process_step
-        vid_chunk = non_existing_videos[start_ind:end_ind]
+        vid_chunk = non_existing_videos[int(start_ind):int(end_ind)]
         
         filename = os.path.join(video_path, "v_%s.mp4")
         cmd_base = "youtube-dl -f 'bestvideo[height <=? 144][ext = mp4]' "
