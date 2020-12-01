@@ -19,8 +19,7 @@ else
     exit 0
 fi
 # execute bash file
-for i in $(`seq 1 $NUM_WORKERS`)
-	do
+for i in `seq 1 $NUM_WORKERS`; do
 	CMD_FILE_NAME=$(printf "%s_worker%d.txt" $OUTFILE_PREFIX $((i-1)))
 	printf 'running %s\n' $CMD_FILE_NAME
 	bash $CMD_FILE_NAME &
